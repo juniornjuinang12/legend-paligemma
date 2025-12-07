@@ -1,21 +1,17 @@
-FROM pytorch/pytorch:2.5.1-cuda12.1-cudnn9-runtime
-
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    HF_HOME=/data/hf \
-    HF_HUB_CACHE=/data/hf/hub \
-    HF_DATASETS_CACHE=/data/hf/datasets \
-    TRANSFORMERS_CACHE=/data/hf/transformers
+# Dockerfile
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Dossiers de cache HF + sortie
-RUN mkdir -p /data/hf/hub /data/hf/datasets /data/hf/transformers /output
+# Dépendances minimales
+RUN pip install --no-cache-dir --upgrade pip \
+ && pip install --no-cache-dir huggingface_hub
 
-RUN pip install --no-cache-dir transformers accelerate pillow huggingface_hub safetensors
-
+# Copier ton script
 COPY main.py /app/main.py
 
-# IMPORTANT: version "test logs" (simple, fiable sur Salad)
-CMD ["python", "-u", "/app/main.py"]
+# Dossier de data (monté en volume sur SaladCloud ou local)
+RUN mkdir -p /data
+
+# Lancer le script
+ENTRYPOINT ["python", "/app/main.py"]
