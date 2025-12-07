@@ -9,10 +9,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     TRANSFORMERS_CACHE=/data/hf/transformers
 
 WORKDIR /app
-RUN mkdir -p /data /output
+
+# Dossiers de cache HF + sortie
+RUN mkdir -p /data/hf/hub /data/hf/datasets /data/hf/transformers /output
 
 RUN pip install --no-cache-dir transformers accelerate pillow huggingface_hub safetensors
 
 COPY main.py /app/main.py
 
-CMD ["torchrun", "--standalone", "--nproc_per_node=8", "/app/main.py"]
+# IMPORTANT: version "test logs" (simple, fiable sur Salad)
+CMD ["python", "-u", "/app/main.py"]
