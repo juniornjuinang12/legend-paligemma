@@ -163,6 +163,7 @@ def main():
                         shutil.copyfileobj(in_f, final_f)
 
         print("✅ JSONL final:", FINAL_OUTPUT_FILE)
+        print("📦 Taille JSONL final (bytes):", os.path.getsize(FINAL_OUTPUT_FILE))
 
     barrier(dist_on)
     if dist_on:
