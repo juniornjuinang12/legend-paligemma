@@ -29,3 +29,5 @@ jobs:
           tags: |
             njuinang/vlog-downloader:latest
             njuinang/vlog-downloader:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
